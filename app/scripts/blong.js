@@ -24,6 +24,7 @@ var animate = window.requestAnimationFrame ||
 
 var update = function() {
     player.update();
+    computer.update(ball);
     ball.update(player.paddle, computer.paddle);
 };
 
@@ -110,6 +111,15 @@ Player.prototype.update = function() {
             this.paddle.move(0, 0);
         }
     }
+};
+
+Computer.prototype.update = function(ball) {
+    var y_pos = ball.y;
+
+    var diff = -((this.paddle.y + (this.paddle.height / 2)) - y_pos);
+
+    this.paddle.move(0, diff);
+    
 };
 
 Paddle.prototype.move = function(x, y) {

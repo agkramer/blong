@@ -15,7 +15,7 @@ canvas.height = height;
 // define variables for game elements
 var player = new Player();
 var computer = new Computer();
-var ball = new Ball(200, 300);
+var ball = new Ball(width/2, height/2);
 
 
 

@@ -94,9 +94,9 @@ window.addEventListener("keyup", function(event) {
 Player.prototype.update = function() {
     for(var key in keysDown) {
         var value = Number(key);
-        if(value == 37) { // left arrow
+        if(value == 39) { // left arrow
             this.paddle.move(0, -4);
-        } else if (value == 39) { // right arrow
+        } else if (value == 37) { // right arrow
             this.paddle.move(0, 4);
         } else {
             this.paddle.move(0, 0);

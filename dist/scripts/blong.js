@@ -183,6 +183,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
 
     if (this.x < 0 || this.x > 1000) { // a point was scored, reset to beginnig position/speed
         paddle1.y = (canvas.height - 125) / 2;
+        paddle2.y = (canvas.height - 125) / 2;
         this.x_speed = 3;
         this.y_speed = 0;
         this.x = width/2;

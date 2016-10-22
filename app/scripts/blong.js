@@ -21,6 +21,7 @@ var ball = new Ball(200, 300);
 
 var update = function() {
     player.update();
+    ball.update();
     // ball.update(player.paddle, computer.paddle);
 };
 
@@ -129,6 +130,8 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 10;
+  this.x_speed = 2;
+  this.y_speed = 0;
 }
 
 Ball.prototype.render = function() {
@@ -136,4 +139,9 @@ Ball.prototype.render = function() {
     context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
     context.fillStyle = "green";
     context.fill();
+};
+
+Ball.prototype.update = function() {
+    this.x += this.x_speed;
+    this.y += this.y_speed;
 };

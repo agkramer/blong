@@ -10,6 +10,11 @@ canvas.height = height;
 var player = new Player();
 var computer = new Computer();
 var ball = new Ball(width/2, height/2);
+var computerScore = 0;
+var playerScore = 0;
+
+document.getElementById('playerScore').innerHTML = playerScore;
+document.getElementById('computerScore').innerHTML = computerScore;
 
 
 
@@ -25,6 +30,8 @@ var animate = window.requestAnimationFrame ||
 var update = function() {
     player.update();
     computer.update(ball);
+    document.getElementById('playerScore').innerHTML = playerScore;
+    document.getElementById('computerScore').innerHTML = computerScore;
     ball.update(player.paddle, computer.paddle);
 };
 
@@ -65,7 +72,7 @@ function Paddle(x, y, width, height) {
     this.y = y;
     this.width = width;
     this.height = height;
-    // this.x_speed = 0;
+    this.x_speed = 0;
     this.y_speed = 0;
 }
 
@@ -119,9 +126,9 @@ Computer.prototype.update = function(ball) {
     var diff = -((this.paddle.y + (this.paddle.height / 2)) - y_pos);
 
     if(diff < 0 && diff < -4) { // max speed up
-        diff = -5;
+        diff = -1;
     } else if(diff > 0 && diff > 4) { // max speed down
-        diff = 5;
+        diff = 1;
     }
 
     this.paddle.move(0, diff);
@@ -181,7 +188,9 @@ Ball.prototype.update = function(playerPaddle, computerPaddle) {
         this.y_speed = -this.y_speed;
     }
 
-    if (this.x < 0 || this.x > 1000) { // a point was scored, reset to beginnig position/speed
+    if (this.x < 0) { // player scored, reset to beginnig position/speed
+        playerScore++;
+        console.log("player: " + playerScore);
         playerPaddle.y = (canvas.height - 125) / 2;
         computerPaddle.y = (canvas.height - 125) / 2;
         playerPaddle.y_speed = 0;
@@ -189,8 +198,22 @@ Ball.prototype.update = function(playerPaddle, computerPaddle) {
 
         this.x_speed = 3;
         this.y_speed = 0;
-        this.x = width/2;
-        this.y = height/2;
+        this.x = canvas.width/2;
+        this.y = canvas.height/2;
+    }
+
+    if (this.x > 1000) { // computer scored, reset to beginning position/speed
+        computerScore++;
+        console.log("computer: " + computerScore);
+        playerPaddle.y = (canvas.height - 125) / 2;
+        computerPaddle.y = (canvas.height - 125) / 2;
+        playerPaddle.y_speed = 0;
+        computerPaddle.y_speed = 0;
+
+        this.x_speed = 3;
+        this.y_speed = 0;
+        this.x = canvas.width/2;
+        this.y = canvas.height/2;
     }
 
     if (top_x > 500) {
@@ -198,14 +221,14 @@ Ball.prototype.update = function(playerPaddle, computerPaddle) {
             // hit the player's paddle
             this.x_speed = -3;
             this.y_speed += (playerPaddle.y_speed / 2);
-            // this.x += this.x_speed;
+            this.x += this.x_speed;
         }
     } else {
         if(top_x < (computerPaddle.x + computerPaddle.width) && bottom_x > computerPaddle.x && top_y < (computerPaddle.y + computerPaddle.height) && bottom_y > computerPaddle.y) {
           // hit the computer's paddle
           this.x_speed = 3;
           this.y_speed += (computerPaddle.y_speed / 2);
-        //   this.x += this.x_speed;
+          this.x += this.x_speed;
         }
     }
 };

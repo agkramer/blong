@@ -65,7 +65,7 @@ function Paddle(x, y, width, height) {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.x_speed = 0;
+    // this.x_speed = 0;
     this.y_speed = 0;
 }
 
@@ -119,18 +119,18 @@ Computer.prototype.update = function(ball) {
     var diff = -((this.paddle.y + (this.paddle.height / 2)) - y_pos);
 
     if(diff < 0 && diff < -4) { // max speed up
-        diff = -4;
+        diff = -5;
     } else if(diff > 0 && diff > 4) { // max speed down
-         diff = 4;
+        diff = 5;
     }
 
     this.paddle.move(0, diff);
 };
 
 Paddle.prototype.move = function(x, y) {
-    this.x += x;
+    // this.x += x;
     this.y += y;
-    this.x_speed = x;
+    // this.x_speed = x;
     this.y_speed = y;
 
     if (this.y < 0) { // all the way up
@@ -165,7 +165,7 @@ Ball.prototype.render = function() {
     context.fill();
 };
 
-Ball.prototype.update = function(paddle1, paddle2) {
+Ball.prototype.update = function(playerPaddle, computerPaddle) {
     this.x += this.x_speed;
     this.y += this.y_speed;
     var top_x = this.x - 10;
@@ -182,8 +182,11 @@ Ball.prototype.update = function(paddle1, paddle2) {
     }
 
     if (this.x < 0 || this.x > 1000) { // a point was scored, reset to beginnig position/speed
-        paddle1.y = (canvas.height - 125) / 2;
-        paddle2.y = (canvas.height - 125) / 2;
+        playerPaddle.y = (canvas.height - 125) / 2;
+        computerPaddle.y = (canvas.height - 125) / 2;
+        playerPaddle.y_speed = 0;
+        computerPaddle.y_speed = 0;
+
         this.x_speed = 3;
         this.y_speed = 0;
         this.x = width/2;
@@ -191,18 +194,18 @@ Ball.prototype.update = function(paddle1, paddle2) {
     }
 
     if (top_x > 500) {
-        if (top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x && top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y) {
+        if (top_x < (playerPaddle.x + playerPaddle.width) && bottom_x > playerPaddle.x && top_y < (playerPaddle.y + playerPaddle.height) && bottom_y > playerPaddle.y) {
             // hit the player's paddle
             this.x_speed = -3;
-            this.y_speed += (paddle1.y_speed / 2);
-            this.x += this.x_speed;
+            this.y_speed += (playerPaddle.y_speed / 2);
+            // this.x += this.x_speed;
         }
     } else {
-        if(top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y) {
+        if(top_x < (computerPaddle.x + computerPaddle.width) && bottom_x > computerPaddle.x && top_y < (computerPaddle.y + computerPaddle.height) && bottom_y > computerPaddle.y) {
           // hit the computer's paddle
           this.x_speed = 3;
-          this.y_speed += (paddle2.y_speed / 2);
-          this.x += this.x_speed;
+          this.y_speed += (computerPaddle.y_speed / 2);
+        //   this.x += this.x_speed;
         }
     }
 };

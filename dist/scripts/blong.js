@@ -66,7 +66,24 @@ var render = function() {
 
 window.onload = function() {
     document.body.appendChild(canvas);
-    animate(step);
+
+    // render court
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = 'white';
+    context.fillRect((canvas.width / 2), 10, 10, canvas.height - 20);
+    context.font="50px Georgia";
+    context.fillText("Press Space to Begin",10,50);
+
+    // render other elements
+    player.render();
+    computer.render();
+
+    window.addEventListener("keydown", function(event) {
+        if(event.keyCode == 32){
+            animate(step);
+        }
+    });
 };
 
 
@@ -125,6 +142,9 @@ Player.prototype.update = function() {
         } else {
             this.paddle.move(0, 0);
         }
+        this.y = firebase.database().ref("leftpaddle")
+        firebase.database().ref("leftpaddle").set(this.paddle.move(0, 0));
+
     }
 };
 
@@ -148,6 +168,7 @@ Paddle.prototype.move = function(x, y) {
     // this.x_speed = x;
     this.y_speed = y;
 
+
     if (this.y < 0) { // all the way up
         this.y = 0;
         this.y_speed = 0;
@@ -155,6 +176,8 @@ Paddle.prototype.move = function(x, y) {
         this.y = 600 - 125;
         this.y_speed = 0;
     }
+
+    return this.y;
 }
 
 

@@ -72,8 +72,10 @@ window.onload = function() {
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = 'white';
     context.fillRect((canvas.width / 2), 10, 10, canvas.height - 20);
-    context.font="50px Georgia";
-    context.fillText("Press Space to Begin",10,50);
+    context.font="20px Georgia";
+    context.fillText("Use left and right arrows to control your paddle", 10, 50)
+    context.font="40px Georgia";
+    context.fillText("Press Space to Begin",10,120);
 
     // render other elements
     player.render();
